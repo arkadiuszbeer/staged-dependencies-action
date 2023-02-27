@@ -68,6 +68,10 @@ if(is.null(getOption("repos"))) {
   options(repos=c(CLOUD="https://cloud.r-project.org"))
 }
 
+cat(paste(
+  "\nRepos is set to", paste(getOption("repos"),collapse= ", ") , "\n\n"  
+))
+                                  
 # Install the remotes package
 if (!require("remotes", quietly = sd_quiet)) {
   install.packages(
