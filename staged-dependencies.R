@@ -66,9 +66,11 @@ if (threads == "auto") {
 cat(paste(
   "\nRepos is set to", paste(getOption("repos"),collapse= ", ") , "\n\n"  
 ))
-                                  
+           
+cat(getOption("repos"))
+
 # Setting repos if not exists, before installing packages
-if(is.null(getOption("repos"))) {
+if(is.null(getOption("repos")) || getOption("repos")["CRAN"]=="") {
   cat("Adding cloud mirror")
   options(repos=c(CLOUD="https://cloud.r-project.org"))
 }
@@ -76,8 +78,6 @@ if(is.null(getOption("repos"))) {
 cat(paste(
   "\nRepos is set to", paste(getOption("repos"),collapse= ", ") , "\n\n"  
 ))
-                                  
-cat(getOption("repos")["CRAN"])
                                   
 # Install the remotes package
 if (!require("remotes", quietly = sd_quiet)) {
