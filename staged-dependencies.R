@@ -70,7 +70,7 @@ cat(paste(
 cat(getOption("repos"))
 
 # Setting repos if not exists, before installing packages
-if(is.null(getOption("repos")) || getOption("repos")["CRAN"]=="") {
+if(is.null(getOption("repos")) || getOption("repos")["CRAN"]=="@CRAN@") {
   cat("Adding cloud mirror")
   options(repos=c(CLOUD="https://cloud.r-project.org"))
 }
