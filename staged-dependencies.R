@@ -63,6 +63,10 @@ if (threads == "auto") {
   cat(paste("Number of cores detected:", threads, "\n\n"))
 }
 
+cat(paste(
+  "\nRepos is set to", paste(getOption("repos"),collapse= ", ") , "\n\n"  
+))
+                                  
 # Setting repos if not exists, before installing packages
 if(is.null(getOption("repos"))) {
   options(repos=c(CLOUD="https://cloud.r-project.org"))
