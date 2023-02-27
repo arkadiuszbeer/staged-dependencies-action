@@ -63,6 +63,12 @@ if (threads == "auto") {
   cat(paste("Number of cores detected:", threads, "\n\n"))
 }
 
+                                  
+options(
+  repos = repos,
+  staged.dependencies.token_mapping = split_to_map(token_mapping)
+)
+                                  
 cat(paste(
   "\nRepos is set to", paste(getOption("repos"),collapse= ", ") , "\n\n"  
 ))
