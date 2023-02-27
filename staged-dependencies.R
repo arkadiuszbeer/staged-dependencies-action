@@ -63,6 +63,11 @@ if (threads == "auto") {
   cat(paste("Number of cores detected:", threads, "\n\n"))
 }
 
+# Setting repos if not exists, before installing packages
+if(is.null(getOption("repos"))) {
+  options(repos=c(CLOUD="https://cloud.r-project.org"))
+}
+
 # Install the remotes package
 if (!require("remotes", quietly = sd_quiet)) {
   install.packages(
