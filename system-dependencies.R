@@ -82,6 +82,15 @@ if ( file.exists(os_release_file)) { # linux-base OS
     }
     desc_file <- file.path(repo_path, "DESCRIPTION")
     if ( file.exists(desc_file)) {
+      
+      # Install the desc package
+      if (!require("desc")) {
+        install.packages(
+          "desc",
+          repos = "https://cloud.r-project.org/"
+        )
+      }
+
       deps <- desc::desc_get_deps()
       deps_pkgs <- deps[deps$type !="Suggests",]$package 
 
