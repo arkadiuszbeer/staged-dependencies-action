@@ -91,7 +91,7 @@ if ( file.exists(os_release_file)) { # linux-base OS
         )
       }
 
-      deps <- desc::desc_get_deps()
+      deps <- desc::desc_get_deps(desc_file)
       deps_pkgs <- deps[deps$type !="Suggests",]$package 
 
       sys_pkgs <- unique(unlist(lapply(deps_pkgs,  macos_req_for_pkg)))
