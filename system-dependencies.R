@@ -24,7 +24,7 @@ if (upgrade_remotes == "true") {
 }
 
 os_release_file <- "/etc/os-release"
-if ( file.exists(os_release_file)) { # linux-base OS
+if (file.exists(os_release_file)) { # linux-base OS
   os_info <- read.csv("/etc/os-release", sep = "=", header = FALSE)
   v_os_info <- setNames(os_info$V2, os_info$V1)
 
@@ -60,29 +60,27 @@ if ( file.exists(os_release_file)) { # linux-base OS
       v_os_info[["NAME"]]
     ))
   }
-} else {  # macos 
+} else { # macos
   systemname <- sessionInfo()$running
   cat(paste(
     "Checking system",
     systemname
-    ))
+  ))
   if (grepl("macos", systemname, ignore.case = TRUE)) {
-    
     macos_req_for_pkg <- function(pkgname) {
-      sysreqs_url <- sprintf("https://sysreqs.r-hub.io/pkg/%s",pkgname) 
+      sysreqs_url <- sprintf("https://sysreqs.r-hub.io/pkg/%s", pkgname)
       res <- httr::HEAD(sysreqs_url)
-      if(res$status_code == 200) {
-        res <- httr::GET(sysreqs_url)  
-        sysreq <- httr::content(res) 
+      if (res$status_code == 200) {
+        res <- httr::GET(sysreqs_url)
+        sysreq <- httr::content(res)
         sysreq_chars <- unique(unlist(lapply(sysreq, function(x) {
           x[[1]]$platforms[["OSX/brew"]]
         })))
-          return(sysreq_chars )
+        return(sysreq_chars)
       }
     }
     desc_file <- file.path(repo_path, "DESCRIPTION")
-    if ( file.exists(desc_file)) {
-      
+    if (file.exists(desc_file)) {
       # Install the desc package
       if (!require("desc")) {
         install.packages(
@@ -92,31 +90,30 @@ if ( file.exists(os_release_file)) { # linux-base OS
       }
 
       deps <- desc::desc_get_deps(desc_file)
-      deps_pkgs <- deps[deps$type !="Suggests",]$package 
+      deps_pkgs <- deps[deps$type != "Suggests", ]$package
 
-      sys_pkgs <- unique(unlist(lapply(deps_pkgs,  macos_req_for_pkg)))
-      if (length(sys_pkgs) >0) {
-         lapply(
+      sys_pkgs <- unique(unlist(lapply(deps_pkgs, macos_req_for_pkg)))
+      if (length(sys_pkgs) > 0) {
+        lapply(
           sys_pkgs,
           function(pkg) {
             system(
               sprintf("brew list %s || brew install %s", pkg, pkg),
               intern = TRUE
-            ) 
+            )
           }
         )
       }
-     } else {
-       cat(paste(
-         desc_file,
+    } else {
+      cat(paste(
+        desc_file,
         " doesn't exist"
       ))
     }
-  }else {
+  } else {
     cat(paste(
       "System dependencies not implemented for os:",
       systemname
     ))
   }
 }
-    
