@@ -66,7 +66,7 @@ if ( file.exists(os_release_file)) { # linux-base OS
     "Checking system",
     systemname
     ))
-  if (grepl("macos", systemname, ignore.case = TRUE) {
+  if (grepl("macos", systemname, ignore.case = TRUE)) {
     
     macos_req_for_pkg <- function(pkgname) {
       sysreqs_url <- sprintf("https://sysreqs.r-hub.io/pkg/%s",pkgname) 
