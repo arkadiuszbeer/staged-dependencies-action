@@ -24,7 +24,7 @@ if (upgrade_remotes == "true") {
 }
 
 os_release_file <- "/etc/os-release"
-if ( file.exists(os_release_file) { # linux-base OS
+if ( file.exists(os_release_file)) { # linux-base OS
   os_info <- read.csv("/etc/os-release", sep = "=", header = FALSE)
   v_os_info <- setNames(os_info$V2, os_info$V1)
 
@@ -80,7 +80,29 @@ if ( file.exists(os_release_file) { # linux-base OS
           return(sysreq_chars )
       }
     }
-    
+    desc_file <- file.path(repo_path, "DESCRIPTION")
+    if ( file.exists(desc_file)) {
+      deps <- desc::desc_get_deps()
+      deps_pkgs <- deps[deps$type !="Suggests",]$package 
+
+      sys_pkgs <- unique(unlist(lapply(deps_pkgs,  macos_req_for_pkg)))
+      if (length(sys_pkgs) >0) {
+         lapply(
+          sys_pkgs,
+          function(pkg) {
+            system(
+              sprintf("brew list %s || brew install %s", pkg, pkg),
+              intern = TRUE
+            ) 
+          }
+        )
+      }
+     } else {
+       cat(paste(
+         desc_file,
+        " doesn't exist"
+      ))
+    }
   }else {
     cat(paste(
       "System dependencies not implemented for os:",
