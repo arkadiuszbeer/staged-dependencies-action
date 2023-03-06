@@ -101,12 +101,14 @@ if (file.exists(os_release_file)) { # linux-base OS
       deps_pkgs <- deps[deps$type != "Suggests", ]$package
        cat(paste(
         "Dependencies:",
-        paste(deps_pkgs, collapse =", ")
+        paste(deps_pkgs, collapse =", "),
+        "\"\n"
       ))
       sys_pkgs <- unique(unlist(lapply(deps_pkgs, macos_req_for_pkg)))
       cat(paste(
         "Installing sys deps:",
-        paste(sys_pkgs, collapse =", ")
+        paste(sys_pkgs, collapse =", "),
+        "\"\n"
       ))
       if (length(sys_pkgs) > 0) {
         lapply(
@@ -122,7 +124,8 @@ if (file.exists(os_release_file)) { # linux-base OS
     } else {
       cat(paste(
         desc_file,
-        " doesn't exist"
+        " doesn't exist",
+        "\"\n"
       ))
     }
   } else {
